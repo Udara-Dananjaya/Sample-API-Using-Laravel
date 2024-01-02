@@ -2,6 +2,14 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+Route::namespace('Admin')->group(function () {
+    // Routes inside this group will use the 'Admin' namespace for controller resolution
+
+    Route::get('dashboard', 'DashboardController@index');
+    Route::get('users', 'UserController@index');
+});
+//Import user control
 use App\Http\Controllers\UserController;
 
 /*
@@ -23,6 +31,13 @@ Route::get('users', UserController::class.'@index');
 
 Route::post('users', [UserController::class, 'store']);
 Route::get('users/{id}', [UserController::class, 'show']);
-Route::patch('users/{id}', [UserController::class, 'update']);
-// Route::put('/users/{id}', 'UserController@update');
+Route::post('users/{id}', [UserController::class, 'update']);
+// Route::put('/users/{id}', 'UserController@update'); PUT just send only idS
 Route::delete('users/{id}', [UserController::class, 'destroy']);
+
+// Route::namespace('Admin')->group(function () {
+//     // Routes inside this group will use the 'Admin' namespace for controller resolution
+
+//     Route::get('dashboard', 'DashboardController@index');
+//     Route::get('users', 'UserController@index');
+// });

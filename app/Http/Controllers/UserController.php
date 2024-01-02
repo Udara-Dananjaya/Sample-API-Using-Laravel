@@ -41,7 +41,7 @@ class UserController extends Controller
             $user->email = $request->input('email');
     
             // Hash the password
-            $user->password = md5(env('APP_SECRET') . $request->input('password'));
+            $user->password = sha1(env('APP_SECRET') . $request->input('password'));
     
             if ($request->hasFile('img')) {
                 $image = $request->file('img');
