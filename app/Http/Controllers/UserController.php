@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+
+
 class UserController extends Controller
 {
     public function index()
@@ -117,4 +121,24 @@ class UserController extends Controller
 
         return 204;
     }
+    public function authenticate(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+    dd($credentials);
+        try {
+            // Attempt authentication
+            if (!$token = JWTAuth::attempt($credentials)) {
+                // Authentication failed
+                return response()->json(['error' => 'invalid_credentials'], 401);
+            }
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            // Exception during token creation
+            return response()->json(['error' => 'could_not_create_token'], 500);
+        }
+    
+        // Authentication successful, return the token
+        return response()->json(compact('token'));
+    }
+    
+
 }
